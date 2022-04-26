@@ -49,7 +49,7 @@ class Bag{
 
 class Passenger{
  
-      constructor(UserName, PassportNumber, SeatNumber, BagWeight){
+      constructor(UserName, PassportNumber, SeatNumber){
             this.userName = UserName;
             this.passportNumber = PassportNumber;
             this.seatNumber = SeatNumber;
@@ -70,73 +70,90 @@ class Passenger{
 
 }
 
-class Plane{
+class Airport{
 
-      constructor(PassengerName, PassportNumber, SeatNumber, BagWeight, Type){
+      constructor(CurrentAirport, Destination){
+
+            this.currentAirport = CurrentAirport;
+            this.destination = Destination;
             
-            this.type = Type;
-            this.boardPassenger(PassengerName, PassportNumber, SeatNumber, BagWeight);
       }
 
-      type;
-      passenger;
+      currentAirportName;
+      destination;
+}
 
-      boardPassenger(PassengerName, PassportNumber, SeatNumber, BagWeight){
+class Plane{
 
-           this.passenger = new Passenger(PassengerName, PassportNumber, SeatNumber, BagWeight);
+      constructor(type){
+            
+            this.type = type;
+            
+      }
+
+      type = '';
+      passenger = [];
+
+      boardPassenger(passenger){
+
+           this.passenger.push(passenger); 
 
       }
 }
 
-class CrewMember{
+class CrewMember extends Passenger{
 
       constructor(){
             
       }
-
-      crewName;
       position;
       staffNumber;
 
 }
 
-class Airport{
 
-      constructor(Name){
 
-            this.airportName = Name;
-            
-      }
-
-      airportName;
-}
-
-let trip1 = new Plane('Rich', 123, 12, 4, 'Concord');
-
+//* Set up passengers
 let richard = new Passenger('Rich', 123, 'A3');
+let daniel = new Passenger('daniel', 153, 'A1');
+let sam = new Passenger('sam', 674, 'A4');
+let ali = new Passenger('ali', 632, 'A6');
+let simon = new Passenger('simon', 613, 'A2');
 
 
 
-//! Testing ---
 
-
-//Todo 1) Setup user and add bags
+//* Check users luggage (Bags)
 richard.addBag(); //!Should throw console error && set value to null
 richard.addBag(3);
 richard.addBag(7);
-richard.bags;
-//Todo 2) Set user destination
+
+daniel.addBag(3);
+daniel.addBag(7);
+
+sam.addBag(3);
+sam.addBag(7);
+
+ali.addBag(3);
+ali.addBag(7);
+
+simon.addBag(3);
+simon.addBag(7);
+
+
+//*Set up plane
+let trip1 = new Plane('concord');
+
+//Set destination
+let destination1 = new Airport('Heathrow', 'Tokyo');
 
 
 
+//* Add passengers to plane
+trip1.boardPassenger(richard);
+trip1.boardPassenger(daniel);
+trip1.boardPassenger(sam);
+trip1.boardPassenger(ali);
+trip1.boardPassenger(simon);
 
-//Todo 3) Add user to plane
-
-
-
-//console.log(trip1);
-
-
-
-
-//console.log(trip1);
+console.log(trip1);
