@@ -5,20 +5,8 @@
  ************************************/
 
 
-
-
-/*
-      1. Passenger & bags are checked in 
-      2. Passenger is allocated an airoplane to fly on
-      3. Passenger lands at destrination 
-      4. End of flight 
-*/
-
-
-
-
-
-
+//Generate random passport numbers
+let randomNumber = Math.round(Math.random() * 999);
 
 class Bag{
 
@@ -27,9 +15,9 @@ class Bag{
 
             try {
                   this.checkBagWeight();
-                  console.log(`Bag weight valid ${Weight}`)
+                 // console.log(`Bag weight: ${Weight}`);
             } catch (error) {
-                  console.error('Bag Weight is not valid');
+                 // console.error('Bag Weight is not valid');
                   this.weight = null;
             }
             
@@ -50,6 +38,7 @@ class Bag{
 class Passenger{
  
       constructor(UserName, PassportNumber, SeatNumber){
+            //super(UserName, PassportNumber, SeatNumber);
             this.userName = UserName;
             this.passportNumber = PassportNumber;
             this.seatNumber = SeatNumber;
@@ -61,6 +50,7 @@ class Passenger{
       passportNumber; 
       seatNumber;
       bags = [];
+      isCrew = false;
 
       //* Adds new bag to passenger object array 
       addBag(weight){
@@ -94,6 +84,19 @@ class Plane{
       type = '';
       passenger = [];
 
+      crewOnboard(){
+
+            let crewCount = 0;
+            this.passenger.forEach(element => {
+            
+            if(element.isCrew){
+                  crewCount++ 
+            }
+            
+            });
+            return crewCount;
+      }
+
       boardPassenger(passenger){
 
            this.passenger.push(passenger); 
@@ -103,9 +106,16 @@ class Plane{
 
 class CrewMember extends Passenger{
 
-      constructor(){
-            
+      constructor(UserName, PassportNumber, SeatNumber, Position, StaffNumber, isCrew){
+            super(UserName, PassportNumber, SeatNumber, isCrew);
+            this.position = Position;
+            this.staffNumber = StaffNumber;
+            this.userName = UserName;
+            this.passportNumber = PassportNumber;
+            this.seatNumber = SeatNumber;
+            this.isCrew = true;
       }
+
       position;
       staffNumber;
 
@@ -114,16 +124,23 @@ class CrewMember extends Passenger{
 
 
 //* Set up passengers
-let richard = new Passenger('Rich', 123, 'A3');
-let daniel = new Passenger('daniel', 153, 'A1');
-let sam = new Passenger('sam', 674, 'A4');
-let ali = new Passenger('ali', 632, 'A6');
-let simon = new Passenger('simon', 613, 'A2');
+let richard = new Passenger('Rich', randomNumber, 'A3');
+let daniel = new Passenger('daniel', randomNumber, 'A1');
+let sam = new Passenger('sam', randomNumber, 'A4');
+let ali = new Passenger('ali', randomNumber, 'A6');
+let simon = new Passenger('simon', randomNumber, 'A2');
 
+//* Set up staff
+let jeff = new CrewMember('Jeff', randomNumber, 'C1','Cabin crew', 05);
+jeff.addBag(4);
+let kevin = new CrewMember('Kevin', randomNumber, 'C2','Cabin crew', 03);
+kevin.addBag(3);
+let joe = new CrewMember('joe', randomNumber, 'C3','Co-Pilot', 02);
+joe.addBag(1);
+let lisa = new CrewMember('lisa', randomNumber, 'C4','Pilot', 01);
+lisa.addBag(2);
 
-
-
-//* Check users luggage (Bags)
+//* Check in users luggage (Bags)
 richard.addBag(); //!Should throw console error && set value to null
 richard.addBag(3);
 richard.addBag(7);
@@ -148,12 +165,30 @@ let trip1 = new Plane('concord');
 let destination1 = new Airport('Heathrow', 'Tokyo');
 
 
-
 //* Add passengers to plane
 trip1.boardPassenger(richard);
 trip1.boardPassenger(daniel);
 trip1.boardPassenger(sam);
 trip1.boardPassenger(ali);
 trip1.boardPassenger(simon);
+trip1.boardPassenger(jeff);
+trip1.boardPassenger(kevin);
+trip1.boardPassenger(joe);
+trip1.boardPassenger(lisa);
 
-console.log(trip1);
+
+
+console.log(
+
+`Trip information
+--------------------------------------------------------------
+Current location: ${destination1.currentAirport}
+Plane destination: ${destination1.destination}
+Plane crew onboard: ${trip1.crewOnboard()}
+Passengers: ${trip1.passenger.length - trip1.crewOnboard()}
+--------------------------------------------------------------`
+
+
+
+ );
+
